@@ -1,11 +1,14 @@
 package cn.zdsoft.datacopy;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import cn.zdsoft.common.FileUtil;
 import cn.zdsoft.common.PathUtil;
+import cn.zdsoft.datacopy.config.Dest;
 import cn.zdsoft.datacopy.config.Filter;
 import cn.zdsoft.datacopy.util.Config;
 import cn.zdsoft.datacopy.util.LogHelper;
@@ -97,12 +100,27 @@ public class StartUp extends Thread {
 	 */
 	private boolean CopyFile(File file, Filter filter) {
 		try {
-			List<String> dirs=new ArrayList<String>();
+			if(filter.getDests().size()==0){
+				LogHelper.getLogger().error("过滤器:"+filter.getName()+"没有输出目录,无法复制");
+				return false;
+			}
+			//定义需要复制的所有文件
+			List<String> fileNames=new ArrayList<String>();
 			if(filter.isBalanced()){
 				//随机分配
-				
+				int index=new Random().nextInt(filter.getDests().size());
+				Dest dest=filter.getDests().get(index);
+				fileNames.add(PathUtil.Combine(dest.getPath(),file.getName(),dest.getAppend()));
 			}else{
 				//依次复制
+				for (Dest dest : filter.getDests()) {
+					fileNames.add(PathUtil.Combine(dest.getPath(),file.getName(),dest.getAppend()));
+				}
+			}
+			
+			//正式复制
+			for (String fileName : fileNames) {
+				FileUtil.CopyFile(file.getAbsolutePath(), fileName);
 			}
 
 			return true;
@@ -111,7 +129,23 @@ public class StartUp extends Thread {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * 初始化相关目录(来源目录、错误目录、丢弃目录)
+	 */
+	private void InitDir(){
+		//来源目录
+		for (String dir : Config.GetConfig().getDataCopyConfig().getInputDirs()) {
+			File file=new File(dir);
+			if(!file.exists()||file.isFile()){
+				file.mkdir();//创建目录
+			}
+		}
+		//错误目录
+		File errDir=new File(Config.GetConfig().getDataCopyConfig().getFailedDir());
+		
+	}
+	
 	/**
 	 * 启动
 	 */

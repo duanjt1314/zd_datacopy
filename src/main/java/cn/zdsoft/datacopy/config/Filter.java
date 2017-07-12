@@ -110,7 +110,7 @@ public class Filter {
 	/**
 	 * @return 获取 输出路径集合
 	 */
-	public List<Dest> getDists() {
+	public List<Dest> getDests() {
 		return dests;
 	}
 
@@ -119,7 +119,7 @@ public class Filter {
 	 * 
 	 * @param dists
 	 */
-	public void setDists(List<Dest> dests) {
+	public void setDests(List<Dest> dests) {
 		dests = dests;
 	}
 

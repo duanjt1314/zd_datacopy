@@ -109,7 +109,7 @@ public class Config {
 			
 			//输出目录
 			List<Dest> dests= LoadDest(XmlUtil.GetXmlElement(eleFilter, "Dests"));
-			filter.setDists(dests);
+			filter.setDests(dests);
 			
 			filters.add(filter);
 		}
