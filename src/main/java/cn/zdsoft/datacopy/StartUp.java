@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import cn.zdsoft.common.DirectoryUtil;
 import cn.zdsoft.common.FileUtil;
 import cn.zdsoft.common.PathUtil;
 import cn.zdsoft.datacopy.config.Dest;
@@ -26,6 +27,9 @@ public class StartUp extends Thread {
 	public void run() {
 		while (running) {
 			try {
+				// 初始化目录
+				InitDir();
+
 				List<String> inputs = Config.GetConfig().getDataCopyConfig().getInputDirs();
 				// 循环目录
 				for (String input : inputs) {
@@ -100,52 +104,52 @@ public class StartUp extends Thread {
 	 */
 	private boolean CopyFile(File file, Filter filter) {
 		try {
-			if(filter.getDests().size()==0){
-				LogHelper.getLogger().error("过滤器:"+filter.getName()+"没有输出目录,无法复制");
+			if (filter.getDests().size() == 0) {
+				LogHelper.getLogger().error("过滤器:" + filter.getName() + "没有输出目录,无法复制");
 				return false;
 			}
-			//定义需要复制的所有文件
-			List<String> fileNames=new ArrayList<String>();
-			if(filter.isBalanced()){
-				//随机分配
-				int index=new Random().nextInt(filter.getDests().size());
-				Dest dest=filter.getDests().get(index);
-				fileNames.add(PathUtil.Combine(dest.getPath(),file.getName(),dest.getAppend()));
-			}else{
-				//依次复制
+			// 定义需要复制的所有文件
+			List<String> fileNames = new ArrayList<String>();
+			if (filter.isBalanced()) {
+				// 随机分配
+				int index = new Random().nextInt(filter.getDests().size());
+				Dest dest = filter.getDests().get(index);
+				fileNames.add(PathUtil.Combine(dest.getPath(), file.getName(), dest.getAppend()));
+				DirectoryUtil.CreateDir(dest.getPath());// 万一目录不存在则创建目录
+			} else {
+				// 依次复制
 				for (Dest dest : filter.getDests()) {
-					fileNames.add(PathUtil.Combine(dest.getPath(),file.getName(),dest.getAppend()));
+					fileNames.add(PathUtil.Combine(dest.getPath(), file.getName(), dest.getAppend()));
+					DirectoryUtil.CreateDir(dest.getPath());// 万一目录不存在则创建目录
 				}
 			}
-			
-			//正式复制
+
+			// 正式复制
 			for (String fileName : fileNames) {
 				FileUtil.CopyFile(file.getAbsolutePath(), fileName);
 			}
 
 			return true;
 		} catch (Exception e) {
-			LogHelper.getLogger().error("文件:" + file.getAbsolutePath() +"过滤器:"+filter.getName()+ "复制失败", e);
+			LogHelper.getLogger().error("文件:" + file.getAbsolutePath() + "过滤器:" + filter.getName() + "复制失败", e);
 			return false;
 		}
 	}
-	
+
 	/**
 	 * 初始化相关目录(来源目录、错误目录、丢弃目录)
 	 */
-	private void InitDir(){
-		//来源目录
+	private void InitDir() {
+		// 来源目录
 		for (String dir : Config.GetConfig().getDataCopyConfig().getInputDirs()) {
-			File file=new File(dir);
-			if(!file.exists()||file.isFile()){
-				file.mkdir();//创建目录
-			}
+			DirectoryUtil.CreateDir(dir);
 		}
-		//错误目录
-		File errDir=new File(Config.GetConfig().getDataCopyConfig().getFailedDir());
-		
+		// 错误目录
+		DirectoryUtil.CreateDir(Config.GetConfig().getDataCopyConfig().getFailedDir());
+		// 丢弃目录
+		DirectoryUtil.CreateDir(Config.GetConfig().getDataCopyConfig().getDiscardDir());
 	}
-	
+
 	/**
 	 * 启动
 	 */

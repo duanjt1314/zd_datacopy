@@ -31,5 +31,7 @@ public class AppTest {
 		File file=new File("f:\\result.txt");		
 		file.renameTo(new File("F:\\迅雷下载\\abc.txt"));
 	}
+	
+	
 
 }
