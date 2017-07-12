@@ -1,5 +1,6 @@
 package cn.zdsoft.datacopy.config;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,11 +10,21 @@ import java.util.List;
  * @date 2017-07-10
  */
 public class Filter {
+	/************* 构造函数 *************/
+	/**
+	 * 构造函数,初始化集合对象
+	 */
+	public Filter() {
+		this.dests=new ArrayList<Dest>();
+		this.searchPatterns=new String[]{};
+	}	
+	
 	/************* 字段 *************/
 	/**
 	 * 过滤器名称
 	 */
 	private String name;
+
 	/**
 	 * 是否写复制日志
 	 */
@@ -29,7 +40,7 @@ public class Filter {
 	/**
 	 * 输出路径集合
 	 */
-	private List<Dest> Dists;
+	private List<Dest> dests;
 
 	/*********** 方法 ***********/
 
@@ -100,7 +111,7 @@ public class Filter {
 	 * @return 获取 输出路径集合
 	 */
 	public List<Dest> getDists() {
-		return Dists;
+		return dests;
 	}
 
 	/**
@@ -108,8 +119,8 @@ public class Filter {
 	 * 
 	 * @param dists
 	 */
-	public void setDists(List<Dest> dists) {
-		Dists = dists;
+	public void setDists(List<Dest> dests) {
+		dests = dests;
 	}
 
 }
