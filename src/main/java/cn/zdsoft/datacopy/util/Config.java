@@ -46,6 +46,7 @@ public class Config {
 	public static Config GetConfig() {
 		if (_config == null) {
 			_config = new Config();
+			_config.LoadConfig();
 		}
 		return _config;
 	}
@@ -104,11 +105,13 @@ public class Config {
 			
 			//搜索选项
 			String searchPatterns=XmlUtil.GetXmlElement(eleFilter, "SearchPatterns").getText();
-			filter.setSearchPatterns(searchPatterns.split("|"));
+			filter.setSearchPatterns(searchPatterns.split("\\|"));
 			
 			//输出目录
 			List<Dest> dests= LoadDest(XmlUtil.GetXmlElement(eleFilter, "Dests"));
 			filter.setDists(dests);
+			
+			filters.add(filter);
 		}
 		return filters;
 	}

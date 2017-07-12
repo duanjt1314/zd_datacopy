@@ -32,76 +32,11 @@
 			<!--是否写复制日志，此日志为记录此规则复制了哪些文件 -->
 			<WriteCopyLog>true</WriteCopyLog>
 			<!--文件搜索规则，只处理满足此规则的文件 -->
-			<SearchPatterns>
-				<Pattern>*SiteOnlineLog*</Pattern>
-				<Pattern>*WFNetLog*</Pattern>
-				<Pattern>*HotspotInfoLog*</Pattern>
-				<Pattern>*WifiTerminalInfoLog*</Pattern>
-				<Pattern>*WifiVIDOnLineLog*</Pattern>
-				<Pattern>*WifiActiveLog*</Pattern>
-				<Pattern>*WifiVIDLog*</Pattern>
-				<Pattern>*WifiMobileLog*</Pattern>
-				<Pattern>*WifiOnlineLog*</Pattern>
-				<Pattern>*WebMailLog*</Pattern>
-				<Pattern>*SearchLog*</Pattern>
-				<Pattern>*BBSInfo*</Pattern>
-				<Pattern>*DataCleanLogs*</Pattern>
-				<Pattern>*DataInvalidLogs*</Pattern>
-				<Pattern>*DataReceiveLogs*</Pattern>
-				<Pattern>*WebMailAttLog*</Pattern>
-				<Pattern>*BBSAttLog*</Pattern>
-				<Pattern>*AuditLog*</Pattern>
-				<Pattern>*MobileDevTrackLog*</Pattern>
-				<Pattern>*SpecialToolLog*</Pattern>
-			</SearchPatterns>
+			<SearchPatterns>_WifiTerminalInfoLog_|_WifiOnlineLog_|_WifiActiveLog_</SearchPatterns>
 			<!--将文件复制到以下目标目录 -->
 			<Dests>
 				<!-- OpType:可选，默认为直接复制，Append表示复制完成后文件名中追加 Value：标识追加值 -->
 				<Dest>F:\Switch2015\SendToInner\WifiSrv\Logs</Dest>
-			</Dests>
-		</Filter>
-		<Filter>
-			<!--复制规则名称 -->
-			<Name Explan="数据提供接转换接口">TOINTERFACE</Name>
-			<!--是否写复制日志，此日志为记录此规则复制了哪些文件 -->
-			<WriteCopyLog>false</WriteCopyLog>
-			<!--文件搜索规则，只处理满足此规则的文件 -->
-			<SearchPatterns>
-				<Pattern>*_WifiOnlineLog*</Pattern>
-				<Pattern>*_WifiActiveLog_*</Pattern>
-				<Pattern>*_WFNetLog_*</Pattern>
-				<Pattern>*_WifiTerminalInfoLog_*</Pattern>
-				<Pattern>*_HotspotInfoLog_*</Pattern>
-				<Pattern>*_WebMailLog_*</Pattern>
-				<Pattern>*_SearchLog_*</Pattern>
-				<Pattern>*_WifiVIDOnLineLog_*</Pattern>
-				<Pattern>*_WifiVIDLog_*</Pattern>
-				<Pattern>*_IMSILog_*</Pattern>
-				<pattern>*_WifiFakeTerminalInfoLog_*</pattern>
-				<pattern Explan="20161115增加的特征设备采集手机号内容">*_WlanMobileLog_*</pattern>
-			</SearchPatterns>
-			<!--将文件复制到以下目标目录 -->
-			<Dests>
-				<!-- OpType:可选，默认为直接复制，Append表示复制完成后文件名中追加 Value：标识追加值 -->
-				<Dest>F:\Switch2015\SendToInner\InterFace\Logs</Dest>
-			</Dests>
-		</Filter>
-		<Filter>
-			<!--复制规则名称 -->
-			<Name>TOLOCAL</Name>
-			<!--是否写复制日志，此日志为记录此规则复制了哪些文件 -->
-			<WriteCopyLog>true</WriteCopyLog>
-			<!--文件搜索规则，只处理满足此规则的文件 -->
-			<SearchPatterns>
-				<Pattern>*SiteOnline*</Pattern>
-				<Pattern>*SiteInfo*</Pattern>
-				<Pattern>*DeviceInfo*</Pattern>
-				<Pattern>*FirmInfo*</Pattern>
-			</SearchPatterns>
-			<!--将文件复制到以下目标目录 -->
-			<Dests>
-				<!-- OpType:可选，默认为直接复制，Append表示复制完成后文件名中追加 Value：标识追加值 -->
-				<Dest>F:\Switch2015\FileImport\Logs</Dest>
 			</Dests>
 		</Filter>
 	</Filters>
