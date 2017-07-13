@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<DataCopyConfig>
-	<!--是否匹配所有规则 -->
-	<IsMatchAllFilter>true</IsMatchAllFilter>	
+<DataCopyConfig>	
 	<!--文件来源目录 -->
 	<Inputs>
 		<Input>F:\Switch2015\DataCopyService\Logs</Input>
@@ -23,20 +21,8 @@
 			<!--将文件复制到以下目标目录 -->
 			<Dests>
 				<!-- OpType:可选，默认为直接复制，Append表示复制完成后文件名中追加 Value：标识追加值 -->
-				<Dest>F:\Switch2015\SendToInner\SendToI2\Logs</Dest>
-			</Dests>
-		</Filter>
-		<Filter>
-			<!--复制规则名称 -->
-			<Name>TOWIFI</Name>
-			<!--是否写复制日志，此日志为记录此规则复制了哪些文件 -->
-			<WriteCopyLog>true</WriteCopyLog>
-			<!--文件搜索规则，只处理满足此规则的文件 -->
-			<SearchPatterns>_WifiTerminalInfoLog_|_WifiOnlineLog_|_WifiActiveLog_</SearchPatterns>
-			<!--将文件复制到以下目标目录 -->
-			<Dests>
-				<!-- OpType:可选，默认为直接复制，Append表示复制完成后文件名中追加 Value：标识追加值 -->
-				<Dest>F:\Switch2015\SendToInner\WifiSrv\Logs</Dest>
+				<Dest>F:\Switch2015\DataCopyService\Target1</Dest>
+				<Dest>F:\Switch2015\DataCopyService\Target2</Dest>
 			</Dests>
 		</Filter>
 	</Filters>

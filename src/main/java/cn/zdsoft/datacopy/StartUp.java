@@ -9,6 +9,7 @@ import java.util.Random;
 import cn.zdsoft.common.DirectoryUtil;
 import cn.zdsoft.common.FileUtil;
 import cn.zdsoft.common.PathUtil;
+import cn.zdsoft.common.StringUtil;
 import cn.zdsoft.datacopy.config.Dest;
 import cn.zdsoft.datacopy.config.Filter;
 import cn.zdsoft.datacopy.util.Config;
@@ -37,6 +38,7 @@ public class StartUp extends Thread {
 					// 循环文件
 					for (File file : files) {
 						try {
+							LogHelper.getLogger().info("准备处理文件:"+file.getAbsolutePath());
 							boolean isSuccess = true;// 是否处理成功
 							boolean isDest = false;// 是否被处理
 
@@ -61,16 +63,19 @@ public class StartUp extends Thread {
 							if (isDest == false) {
 								String fileName = PathUtil.Combine(Config.GetConfig().getDataCopyConfig().getDiscardDir(), file.getName());
 								file.renameTo(new File(fileName));
+								LogHelper.getLogger().info("文件："+file.getAbsolutePath()+"没有需要处理的过滤器,直接移动到丢弃目录");
 								break;
 							}
 							// 处理失败的文件移动到失败目录
 							if (isSuccess == false) {
 								String fileName = PathUtil.Combine(Config.GetConfig().getDataCopyConfig().getFailedDir(), file.getName());
 								file.renameTo(new File(fileName));
+								LogHelper.getLogger().info("文件："+file.getAbsolutePath()+"处理失败,移动到失败目录");
 								break;
 							} else {
 								// 处理成功,直接删除
-								file.delete();
+								FileUtil.DeleteFile(file.getAbsolutePath());
+								LogHelper.getLogger().info("文件："+file.getAbsolutePath()+"处理成功,直接删除");
 							}
 
 						} catch (Exception e) {
@@ -155,8 +160,8 @@ public class StartUp extends Thread {
 	 */
 	public void Start() {
 		// 读取配置文件
-		Config.GetConfig();
-
+		LogHelper.getLogger().info("加载配置文件,结果输出："+StringUtil.GetJsonString(Config.GetConfig()));
+		
 		// 启动,会自动调用run方法
 		running = true;
 		start();

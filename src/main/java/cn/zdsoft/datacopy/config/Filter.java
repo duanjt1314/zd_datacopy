@@ -120,7 +120,7 @@ public class Filter {
 	 * @param dists
 	 */
 	public void setDests(List<Dest> dests) {
-		dests = dests;
+		this.dests = dests;
 	}
 
 }
