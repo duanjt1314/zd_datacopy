@@ -17,7 +17,7 @@
 			<!--是否写复制日志，此日志为记录此规则复制了哪些文件 -->
 			<WriteCopyLog>true</WriteCopyLog>
 			<!--是否平均分配到满足此条件的目标目录 -->
-			<IsBalanced>false</IsBalanced>
+			<IsBalanced>true</IsBalanced>
 			<!--文件搜索规则，只处理满足此规则的文件,多种规则用竖线(|)分割 -->
 			<SearchPatterns>_WifiTerminalInfoLog_|_WifiOnlineLog_|_WifiActiveLog_</SearchPatterns>
 			<!--将文件复制到以下目标目录 -->

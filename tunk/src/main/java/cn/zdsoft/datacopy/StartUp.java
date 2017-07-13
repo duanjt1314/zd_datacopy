@@ -122,7 +122,7 @@ public class StartUp extends Thread {
 				// 随机分配
 				int index = new Random().nextInt(filter.getDests().size());
 				Dest dest = filter.getDests().get(index);
-				fileNames.add(PathUtil.Combine(dest.getPath(), file.getName(), dest.getAppend()));
+				fileNames.add(PathUtil.Combine(dest.getPath(), file.getName() + dest.getAppend()));
 				DirectoryUtil.CreateDir(dest.getPath());// 万一目录不存在则创建目录
 			} else {
 				// 依次复制
