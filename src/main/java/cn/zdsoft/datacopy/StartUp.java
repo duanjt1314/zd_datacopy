@@ -1,11 +1,14 @@
 package cn.zdsoft.datacopy;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import cn.zdsoft.common.DateUtil;
 import cn.zdsoft.common.DirectoryUtil;
 import cn.zdsoft.common.FileUtil;
 import cn.zdsoft.common.PathUtil;
@@ -38,7 +41,7 @@ public class StartUp extends Thread {
 					// 循环文件
 					for (File file : files) {
 						try {
-							LogHelper.getLogger().info("准备处理文件:"+file.getAbsolutePath());
+							LogHelper.getLogger().info("准备处理文件:" + file.getAbsolutePath());
 							boolean isSuccess = true;// 是否处理成功
 							boolean isDest = false;// 是否被处理
 
@@ -49,10 +52,10 @@ public class StartUp extends Thread {
 										// 有一个筛选条件满足即可
 										isDest = true;
 										boolean result = CopyFile(file, filter);
-										LogHelper.getLogger().info("文件:" + file.getAbsolutePath() + " 被过滤器" + file.getName() + "处理");
+										LogHelper.getLogger().info("文件:" + file.getAbsolutePath() + " 被过滤器" + filter.getName() + "处理");
 										if (!result) {
 											isSuccess = false;
-											LogHelper.getLogger().error("文件:" + file.getAbsolutePath() + " 被过滤器" + file.getName() + "处理失败");
+											LogHelper.getLogger().error("文件:" + file.getAbsolutePath() + " 被过滤器" + filter.getName() + "处理失败");
 										}
 										break;
 									}
@@ -63,19 +66,19 @@ public class StartUp extends Thread {
 							if (isDest == false) {
 								String fileName = PathUtil.Combine(Config.GetConfig().getDataCopyConfig().getDiscardDir(), file.getName());
 								file.renameTo(new File(fileName));
-								LogHelper.getLogger().info("文件："+file.getAbsolutePath()+"没有需要处理的过滤器,直接移动到丢弃目录");
+								LogHelper.getLogger().info("文件：" + file.getAbsolutePath() + "没有需要处理的过滤器,直接移动到丢弃目录");
 								break;
 							}
 							// 处理失败的文件移动到失败目录
 							if (isSuccess == false) {
 								String fileName = PathUtil.Combine(Config.GetConfig().getDataCopyConfig().getFailedDir(), file.getName());
 								file.renameTo(new File(fileName));
-								LogHelper.getLogger().info("文件："+file.getAbsolutePath()+"处理失败,移动到失败目录");
+								LogHelper.getLogger().info("文件：" + file.getAbsolutePath() + "处理失败,移动到失败目录");
 								break;
 							} else {
 								// 处理成功,直接删除
 								FileUtil.DeleteFile(file.getAbsolutePath());
-								LogHelper.getLogger().info("文件："+file.getAbsolutePath()+"处理成功,直接删除");
+								LogHelper.getLogger().info("文件：" + file.getAbsolutePath() + "处理成功,直接删除");
 							}
 
 						} catch (Exception e) {
@@ -124,15 +127,18 @@ public class StartUp extends Thread {
 			} else {
 				// 依次复制
 				for (Dest dest : filter.getDests()) {
-					fileNames.add(PathUtil.Combine(dest.getPath(), file.getName(), dest.getAppend()));
+					fileNames.add(PathUtil.Combine(dest.getPath(), file.getName() + dest.getAppend()));
 					DirectoryUtil.CreateDir(dest.getPath());// 万一目录不存在则创建目录
 				}
 			}
 
 			// 正式复制
+			String content = "";
 			for (String fileName : fileNames) {
 				FileUtil.CopyFile(file.getAbsolutePath(), fileName);
+				content += file.getAbsolutePath() + "\t" + fileName + System.lineSeparator();
 			}
+			WriteLog(content, filter.getName());
 
 			return true;
 		} catch (Exception e) {
@@ -156,12 +162,38 @@ public class StartUp extends Thread {
 	}
 
 	/**
+	 * 写入复制日志
+	 * 
+	 * @param content
+	 *            需要写入的内容
+	 * @param filterName
+	 *            写入的过滤器的名称
+	 */
+	private void WriteLog(String content, String filterName) {
+		try {
+			String logDir = Config.GetConfig().getDataCopyConfig().getCopyLogDir();
+			if (logDir.isEmpty()) {
+				LogHelper.getLogger().error("日志输出目录未定义");
+				return;
+			}
+			String path = PathUtil.Combine(logDir, filterName);
+			DirectoryUtil.CreateDir(path);
+			String fileName = PathUtil.Combine(path, DateUtil.Format(new Date(), "yyyy-MM-dd") + ".txt");
+			FileWriter fw = new FileWriter(fileName, true);
+			fw.write(content);
+			fw.close();
+		} catch (Exception e) {
+			LogHelper.getLogger().error("写入日志出现异常", e);
+		}
+	}
+
+	/**
 	 * 启动
 	 */
 	public void Start() {
 		// 读取配置文件
-		LogHelper.getLogger().info("加载配置文件,结果输出："+StringUtil.GetJsonString(Config.GetConfig()));
-		
+		LogHelper.getLogger().info("加载配置文件,结果输出：" + StringUtil.GetJsonString(Config.GetConfig()));
+
 		// 启动,会自动调用run方法
 		running = true;
 		start();

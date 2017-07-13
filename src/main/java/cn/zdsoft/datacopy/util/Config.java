@@ -75,6 +75,7 @@ public class Config {
 				dataCopyConfig.setInputDirs(inputs);
 				dataCopyConfig.setFailedDir(XmlUtil.GetXmlElement(ele, "Failed").getText());
 				dataCopyConfig.setDiscardDir(XmlUtil.GetXmlElement(ele, "Discard").getText());
+				dataCopyConfig.setCopyLogDir(XmlUtil.GetXmlElement(ele, "CopyLog", ""));
 
 				List<Filter> filters=LoadFilters(XmlUtil.GetXmlElement(ele, "Filters"));
 				dataCopyConfig.setFilters(filters);
@@ -126,7 +127,7 @@ public class Config {
 			Dest dest = new Dest();
 			Element eleFilter = (Element) item;
 			dest.setPath(eleFilter.getText());
-			dest.setAppend(XmlUtil.GetXmlElement(eleFilter, "Append", ""));
+			dest.setAppend(XmlUtil.GetXmlAttr(eleFilter, "Append", ""));
 			dests.add(dest);
 		}
 		return dests;

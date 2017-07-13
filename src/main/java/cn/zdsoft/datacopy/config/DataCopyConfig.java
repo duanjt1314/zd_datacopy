@@ -21,6 +21,10 @@ public class DataCopyConfig {
 	 */
 	private String discardDir;
 	/**
+	 * 复制日志目录
+	 */
+	private String copyLogDir;
+	/**
 	 * 过滤器集合
 	 */
 	private List<Filter> filters;
@@ -73,7 +77,19 @@ public class DataCopyConfig {
 	public void setFilters(List<Filter> filters) {
 		this.filters = filters;
 	}
-	
+	/**
+	 * @return 获取 复制日志目录
+	 */
+	public String getCopyLogDir() {
+		return copyLogDir;
+	}
+	/**
+	 * 设置 复制日志目录
+	 * @param 
+	 */
+	public void setCopyLogDir(String copyLogDir) {
+		this.copyLogDir = copyLogDir;
+	}
 	
 	
 	 

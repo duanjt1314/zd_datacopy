@@ -3,6 +3,9 @@ package cn.zdsoft.datacopy;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 
 import org.junit.Test;
@@ -22,23 +25,6 @@ public class AppTest {
 			System.out.println(new Random().nextInt(10));
 		}
 	}
-	
-	/**
-	 * 移动文件测试
-	 */
-	@Test
-	public void testMoveFile(){
-		File file=new File("f:\\result.txt");		
-		file.renameTo(new File("F:\\迅雷下载\\abc.txt"));
-	}
-	
-	@Test
-	public void testDeleteFile(){
-		File file=new File("F:\\Switch2015\\DataCopyService\\Logs\\20170523154716_WifiTerminalInfoLog_000001_000823.gz");
-		boolean con=file.delete();
-		assertTrue(con);
-	}
-	
-	
+			
 
 }

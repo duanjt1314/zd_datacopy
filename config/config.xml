@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<DataCopyConfig>	
+<DataCopyConfig>
 	<!--文件来源目录 -->
 	<Inputs>
 		<Input>F:\Switch2015\DataCopyService\Logs</Input>
@@ -8,6 +8,8 @@
 	<Failed>F:\Switch2015\DataCopyService\Failed</Failed>
 	<!--文件丢弃目录 -->
 	<Discard>F:\Switch2015\DataCopyService\Discard</Discard>
+	<!-- 记录文件复制日志的文件夹 -->
+	<CopyLog>F:\Switch2015\DataCopyService\CopyLog</CopyLog>
 	<Filters>
 		<Filter>
 			<!--复制规则名称 -->
@@ -22,7 +24,7 @@
 			<Dests>
 				<!-- OpType:可选，默认为直接复制，Append表示复制完成后文件名中追加 Value：标识追加值 -->
 				<Dest>F:\Switch2015\DataCopyService\Target1</Dest>
-				<Dest>F:\Switch2015\DataCopyService\Target2</Dest>
+				<Dest Append=".tar">F:\Switch2015\DataCopyService\Target2</Dest>
 			</Dests>
 		</Filter>
 	</Filters>
